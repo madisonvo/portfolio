@@ -30,6 +30,7 @@
         <beam.version>2.54.0</beam.version>
         <java.version>1.8</java.version>
         <slf4j.version>1.7.25</slf4j.version>
+        <bigtable.version>2.12.0</bigtable.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven-dependency-plugin.version>3.0.1</maven-dependency-plugin.version>
     </properties>
@@ -44,6 +45,11 @@
             <groupId>org.apache.beam</groupId>
             <artifactId>beam-runners-direct-java</artifactId>
             <version>${beam.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.cloud.bigtable</groupId>
+            <artifactId>bigtable-hbase-beam</artifactId>
+            <version>${bigtable.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.beam</groupId>

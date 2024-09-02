@@ -1,0 +1,10 @@
+com/streamingapp/IotStreamingAppPubSubToBigTable$Options.class
+com/streamingapp/CommonLog.class
+com/streamingapp/IotStreamingAppPubSubToBigTable$JsonToBigtableMutation.class
+com/streamingapp/IotStreamingAppPubSubToBigQuery.class
+com/streamingapp/IotStreamingAppPubSubToGCS$JsonToRow.class
+com/streamingapp/IotStreamingAppPubSubToGCS.class
+com/streamingapp/IotStreamingAppPubSubToGCS$Options.class
+com/streamingapp/IotStreamingAppPubSubToBigQuery$JsonToRow.class
+com/streamingapp/IotStreamingAppPubSubToBigQuery$Options.class
+com/streamingapp/IotStreamingAppPubSubToBigTable.class

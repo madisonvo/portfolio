@@ -49,9 +49,6 @@ public class IotStreamingAppPubSubToGCS {
         Pipeline pipeline = Pipeline.create(options);
         options.setJobName("iot-streaming-app-pipeline-" + System.currentTimeMillis());
 
-        log.info("Reading from Pubusb topic " + options.getInputTopic());
-        log.info("Writing to GCS Location " + options.getTableName());
-
         pipeline
             .apply("ReadFromPubSub", PubsubIO.readStrings()
                 .fromTopic(options.getInputTopic()))

@@ -50,15 +50,12 @@ public class IotStreamingAppPubSubToBigQuery {
         Pipeline pipeline = Pipeline.create(options);
         options.setJobName("iot-streaming-app-pipeline-" + System.currentTimeMillis());
 
-        log.info("Reading from Pubusb topic " + options.getInputTopic());
-        log.info("Writing to GCS Location " + options.getTableName());
-
         pipeline
             .apply("ReadFromPubSub", PubsubIO.readStrings()
                 .fromTopic(options.getInputTopic()))
             .apply("WindowByMinute", Window.into(FixedWindows.of(Duration.standardSeconds(60))))
-             .apply("ParseJson", ParDo.of(new JsonToRow()))
-             .apply("WriteToBigQuery", BigQueryIO.<CommonLog>write().to(options.getTableName()).useBeamSchema()
+            .apply("ParseJson", ParDo.of(new JsonToRow()))
+            .apply("WriteToBigQuery", BigQueryIO.<CommonLog>write().to(options.getTableName()).useBeamSchema()
                  .withWriteDisposition(BigQueryIO.Write.WriteDisposition.WRITE_APPEND)
                  .withCreateDisposition(BigQueryIO.Write.CreateDisposition.CREATE_IF_NEEDED));
 
