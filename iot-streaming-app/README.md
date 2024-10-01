@@ -6,5 +6,3 @@ PREREQUISITES
     - Authenticate with 'gcloud auth application-default login'
 3. Apache Maven
     - Install Apache Maven for managing dependencies and building the project
-
-SETUP

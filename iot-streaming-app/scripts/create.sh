@@ -14,6 +14,6 @@ echo "Creating BigQuery dataset: ${BIGQUERY_DATASET}"
 bq --location=US mk --dataset ${PROJECT_ID}:${BIGQUERY_DATASET}
 
 echo "Creating BigQuery table: ${BIGQUERY_TABLE}"
-bq mk --table ${PORJECT_ID}:${BIGQUERY_DATASET}.${BIGQUERY_TABLE} ${BIGQUERY_TABLE_SCHEMA}
+bq mk --table ${PROJECT_ID}:${BIGQUERY_DATASET}.${BIGQUERY_TABLE} ${BIGQUERY_TABLE_SCHEMA}
 
 echo "Resources created successfully"
