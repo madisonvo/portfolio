@@ -1,3 +1,12 @@
+/*
+ * File: Option.java
+ * Author: Madison Vo
+ * Purpose: The Option class represents an entity/table within the quizdatabase. It contains
+ *          the fields int optionId (the primary key), int questionId (foreign key referencing
+ *          a question), String option (the option text), boolean isCorrect (whether or not the
+ *          option is the correct answer). Getters and setters have been generated for each field.
+ */
+
 package com.interactive_quiz_game.spring_boot_quiz.model;
 
 import lombok.Data;

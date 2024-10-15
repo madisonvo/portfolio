@@ -1,3 +1,14 @@
+/*
+ * File: UserResponse.java
+ * Author: Madison Vo
+ * Purpose: The UserResponse class represents an entity/table within the quizdatabase. It
+ *          contains the fields int userResponseId (the primary key), int userId (foreign
+ *          key referencing a user), int questionId (foreign key referencing a question),
+ *          int optionId (foreign key referencing an option), and boolean isCorrect
+ *          (whether or not the user's response was correct). Getter and setters have been
+ *          generated for each field.
+ */
+
 package com.interactive_quiz_game.spring_boot_quiz.model;
 
 import lombok.Data;

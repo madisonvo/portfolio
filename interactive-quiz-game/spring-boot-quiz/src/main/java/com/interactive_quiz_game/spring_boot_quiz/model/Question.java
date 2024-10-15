@@ -1,3 +1,12 @@
+/*
+ * File: Question.java
+ * Author: Madison Vo
+ * Purpose: The Question class represents an entity/table within the quizdatabase. It contains
+ *          the fields int questionId (the primary key), int quizId (foreign key referencing a
+ *          quiz), String difficulty (the difficulty level for the quiz), String question (the
+ *          text question). Getter and setters have been generated for each field.
+ */
+
 package com.interactive_quiz_game.spring_boot_quiz.model;
 
 import lombok.Data;

@@ -1,18 +1,31 @@
 package com.interactive_quiz_game.spring_boot_quiz.service;
 
-import com.interactive_quiz_game.spring_boot_quiz.model.User;
-import com.interactive_quiz_game.spring_boot_quiz.repository.UserRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
+@Service
 public class UserService {
-    private UserRepository userRepository;
+    private final RestTemplate restTemplate;
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public UserService() {
+        this.restTemplate = new RestTemplate();
     }
 
-    public User createUser(User user) {
-        return userRepository.save(user);
+    public List<Map<String, Object>> getQuestions(String category, String difficulty) {
+        String url = "https://the-trivia-api.com/v2/questions";
+        URI uri = UriComponentsBuilder.fromHttpUrl(url)
+                .queryParam("category", category)
+                .queryParam("difficulty", difficulty)
+                .build()
+                .toUri();
+
+        Map<String, Object>[] response = restTemplate.getForObject(uri, Map[].class);
+        return response != null ? Arrays.asList(response) : List.of();
     }
 }
