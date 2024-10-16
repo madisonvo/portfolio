@@ -1,47 +1,35 @@
 package com.interactive_quiz_game.spring_boot_quiz.controller;
 
-import com.interactive_quiz_game.spring_boot_quiz.service.UserService;
+import com.interactive_quiz_game.spring_boot_quiz.dto.QuestionDTO;
+import com.interactive_quiz_game.spring_boot_quiz.dto.TriviaDTO;
+import com.interactive_quiz_game.spring_boot_quiz.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 public class RestSpringBootController {
 
-//    @RequestMapping("/hello")
-//    public String hello() {
-//        return "Hello world";
-//    }
-//
-//    @GetMapping(value = "/callclienthello")
-//    private String getHelloClient() {
-//        String uri = "http://localhost:8080/hello";
-//        RestTemplate restTemplate = new RestTemplate();
-//        String result = restTemplate.getForObject(uri, String.class);
-//        return result;
-//    }
-//
-//    @GetMapping(value = "/questions")
-//    public List<Object> getQuestions() {
-//        String url = "https://the-trivia-api.com/v2/questions";
-//        RestTemplate restTemplate = new RestTemplate();
-//        Object[] questions = restTemplate.getForObject(url, Object[].class);
-//        return Arrays.asList(questions);
-//    }
     @Autowired
-    private UserService userService;
+    private QuestionService questionService;
+
+    @PostMapping(value = "/users")
+    public void getUser(@RequestParam("username") String username) {
+        // TODO: Implement the POST request from React frontend when user inputs username,
+        //  selects which category, and selects which difficulty (use fetch)
+        int userId = questionService.insertUser(username);
+    }
+
+    @PostMapping(value = "/quizzes")
+    public void getQuiz(@RequestParam("categories") String categories, @RequestParam("difficulties") String difficulties, int userId) {
+        List<QuestionDTO> questionDTOs =  questionService.getQuestions(categories, difficulties);
+        int quizId = questionService.insertQuiz(categories, difficulties, userId);
+        questionService.insertQuestions(questionDTOs, quizId);
+    }
 
     @GetMapping(value = "/questions")
-    public List<Map<String, Object>> getTrivia(
-            @RequestParam(value = "category", required = false) String category,
-            @RequestParam(value = "difficulty", required = false) String difficulty) {
-        return userService.getQuestions(category, difficulty);
+    public void getTrivia(@RequestParam("categories") String categories, @RequestParam("difficulties") String difficulties) {
+        List<QuestionDTO> questionDTOs =  questionService.getQuestions(categories, difficulties);
     }
 }
