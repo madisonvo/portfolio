@@ -9,7 +9,7 @@ DROP TABLE IF EXISTS User;
 
 CREATE TABLE User (
 	userId INT NOT NULL AUTO_INCREMENT,
-    username VARCHAR(50) NOT NULL,
+    username VARCHAR(255) NOT NULL,
     PRIMARY KEY (userId)
 );
 
@@ -26,7 +26,7 @@ INSERT INTO User (username) VALUES (
 CREATE TABLE Quiz (
 	quizId INT NOT NULL AUTO_INCREMENT,
     userId INT NOT NULL,
-    category VARCHAR(100) NOT NULL,
+    category VARCHAR(255) NOT NULL,
     difficulty VARCHAR(6) NOT NULL,
     score INT NOT NULL,
     PRIMARY KEY (quizId),
@@ -56,7 +56,7 @@ CREATE TABLE Question (
 	questionId INT NOT NULL AUTO_INCREMENT,
     quizId INT NOT NULL,
     difficulty VARCHAR(6) NOT NULL,
-    question VARCHAR(100) NOT NULL,
+    question VARCHAR(255) NOT NULL,
     PRIMARY KEY (questionId),
     FOREIGN KEY (quizId) REFERENCES Quiz(quizId)
 );
@@ -80,7 +80,7 @@ INSERT INTO Question (quizId, difficulty, question) VALUES (
 CREATE TABLE `Option` (
 	optionId INT NOT NULL AUTO_INCREMENT,
     questionId INT NOT NULL,
-    `option` VARCHAR(100) NOT NULL,
+    `option` VARCHAR(255) NOT NULL,
     isCorrect BOOLEAN NOT NULL,
     PRIMARY KEY(optionId),
     FOREIGN KEY (questionId) REFERENCES Question(questionId)

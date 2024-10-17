@@ -49,7 +49,15 @@ public class QuestionService {
                 .build()
                 .toUri();
 
+        System.out.println("Constructed URI: " + uri.toString());
         String response = restTemplate.getForObject(uri, String.class);
+        System.out.println("API Response: " + response);
+
+        if (response == null || response.isEmpty()) {
+            System.out.println("No data received from the API");
+            return new ArrayList<>(); // Return an empty list
+        }
+
         try {
             return objectMapper.readValue(response, objectMapper.getTypeFactory().constructCollectionType(List.class, QuestionDTO.class));
         } catch (Exception e) {
