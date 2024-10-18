@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./Buttons.css";
 
 export const DifficultiesPage = ({userId, categories, setDifficulties, setQuizId}) => {
     const [difficulties, setDifficultiesLocal] = useState("");
@@ -11,8 +12,14 @@ export const DifficultiesPage = ({userId, categories, setDifficulties, setQuizId
     }
 
     const handleSubmit = async () => {
+        if (difficulties === "") {
+            alert("You need to choose a difficulty!");
+            return;
+        }
+
         setDifficulties(difficulties);
         console.log(`Difficulty: ${difficulties}`);
+        
         try {
             const response = await fetch("http://localhost:8080/quizzes", {
                 method: "POST",
@@ -36,13 +43,20 @@ export const DifficultiesPage = ({userId, categories, setDifficulties, setQuizId
         }
     }
 
+    const allDifficulties = ["easy", "medium", "hard"];
+
     return (
         <div>
             <div>
                 Pick a difficulty:
-                <button onClick={() => handleClick("easy")}>Easy</button>
-                <button onClick={() => handleClick("medium")}>Medium</button>
-                <button onClick={() => handleClick("hard")}>Hard</button>
+                {allDifficulties.map((difficulty, i) => (
+                    <div key={i}>
+                        <button onClick={() => handleClick(difficulty)}
+                            className={difficulties === difficulty ? "selected" : ""}>
+                            {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}
+                        </button>
+                    </div>
+                ))}
             </div>
             <button onClick={handleSubmit}>Submit</button>
         </div>

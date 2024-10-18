@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
+import "./Buttons.css";
 
-export const QuestionsPage = ({ categories, difficulties, quizId }) => {
+export const QuestionsPage = ({ categories, difficulties, userId, quizId }) => {
     const [questions, setQuestions] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -35,13 +36,47 @@ export const QuestionsPage = ({ categories, difficulties, quizId }) => {
         console.log(`Selected answer: ${selectedOption}`);
     };
 
-    const handleNextQuestion = () => {
+    const handleNextQuestion = async () => {
         const isCorrect = selectedAnswer === questions[currentQuestionIndex].correctAnswer;
+        
+        let optionId = null;
+
         if (isCorrect) {
             setScore((prevScore) => prevScore + 1); // TODO: Implement dynamic percentage score for when they are taking the quiz
+            console.log(`Current question ID: ${currentQuestion.correctAnswerId}`);
+            optionId = currentQuestion.correctAnswerId;
+        } else {
+            const index = currentQuestion.incorrectAnswers.indexOf(selectedAnswer);
+            console.log(`Index: ${index}`);
+            optionId = currentQuestion.incorrectAnswersIds[index];
         }
+
         setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
         setSelectedAnswer(null);
+
+        console.log(`UserId: ${userId}, QuizId: ${quizId}, QuestionId: ${currentQuestion.questionId}, OptionId: ${optionId}, isCorrect: ${isCorrect}`);
+
+        try {
+            const response = await fetch("http://localhost:8080/responses", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: new URLSearchParams({
+                    userId: userId,
+                    quizId: quizId,
+                    questionId: currentQuestion.questionId, //
+                    optionId: optionId, //
+                    isCorrect: isCorrect,
+                }),
+            });
+
+            if (!response.ok) {
+                console.error("Failed to submit user response:", response.statusText);
+            }
+        } catch (error) {
+
+        }
     };
 
     if (loading) {
@@ -58,18 +93,25 @@ export const QuestionsPage = ({ categories, difficulties, quizId }) => {
 
     const currentQuestion = questions[currentQuestionIndex];
 
-    // TODO: Fix selecting the correct button will mark as correct even if it is not the final answer that was selected
     return (
         <div className="questions-page">
             <div className="question-container">
+                {currentQuestionIndex > 0 && currentQuestionIndex < 10 ? (
+                    <div>
+                        <p>Current score: {score} out of {currentQuestionIndex}</p>
+                    </div>
+                ) : (
+                    <div>
+                    </div>
+                )}
                 {currentQuestion ? (
                     <div className="question">
                         <p>{currentQuestion.question.text}</p>
                         <div className="options">
-                            {/* TODO: Mix up ordering of options */}
                             {[...currentQuestion.incorrectAnswers, currentQuestion.correctAnswer].map((option, i) => (
                                 <div key={i}>
-                                    <button onClick={() => handleAnswerClick(option)}>
+                                    <button onClick={() => handleAnswerClick(option, i)}
+                                        className={selectedAnswer === option ? "selected" : ""}>
                                         {option}
                                     </button>
                                 </div>

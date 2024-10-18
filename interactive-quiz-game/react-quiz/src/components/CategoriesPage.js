@@ -1,40 +1,44 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./Buttons.css";
 
 export const CategoriesPage = ({setCategories}) => {
     const [categories, setCategoriesLocal] = useState("");
     const navigate = useNavigate();
 
     const handleClick = (categories) => {
-        setCategoriesLocal(categories);
-        console.log(`Local category: ${categories}`);
+        const formattedCategories = categories.toLowerCase().replaceAll(" ", "_");
+        setCategoriesLocal(formattedCategories);
+        console.log(`Local category: ${formattedCategories}`);
     }
 
     const handleSubmit = () => {
-        setCategories(categories);
-        console.log(`Category: ${categories}`);
+        if (categories === "") {
+            alert("You need to choose a category!");
+            return;
+        }
+
+        const formattedCategories = categories.toLowerCase().replaceAll(" ", "_");
+        setCategories(formattedCategories);
+        console.log(`Category: ${formattedCategories}`);
         navigate("/difficulties");
     }
+
+    const allCategories = ["Music", "Sport and Leisure", "Film and TV", 
+        "Arts and Literature", "History", "Society and culture", 
+        "Science", "Geography", "Food and Drink", "General Knowledge"];
 
     return (
         <div className="categories-page">
             Pick a category:
-            <div className="button-container1">
-                <button onClick={() => handleClick("music")}>Music</button>
-                <button onClick={() => handleClick("sport_and_leisure")}>Sport and Leisure</button>
-                <button onClick={() => handleClick("film_and_tv")}>Film and TV</button>
-            </div>
-            <div className="button-container2">
-                <button onClick={() => handleClick("arts_and_literature")}>Arts and Literature</button>
-                <button onClick={() => handleClick("history")}>History</button>
-                <button onClick={() => handleClick("society_and_culture")}>Society and Culture</button>
-                <button onClick={() => handleClick("science")}>Science</button>
-            </div>
-            <div className="button-container2">
-                <button onClick={() => handleClick("geography")}>Geography</button>
-                <button onClick={() => handleClick("food_and_drink")}>Food and Drink</button>
-                <button onClick={() => handleClick("general_knowledge")}>General Knowledge</button>
-            </div>
+            {allCategories.map((category, i) => (
+                <div key={i}>
+                    <button onClick={() => handleClick(category)}
+                        className={categories === category.toLowerCase().replaceAll(" ", "_") ? "selected" : ""}>
+                        {category}
+                    </button>
+                </div>
+            ))}
             <button onClick={handleSubmit}>Next</button>
         </div>
     );
