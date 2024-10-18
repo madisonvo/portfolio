@@ -42,7 +42,7 @@ export const QuestionsPage = ({ categories, difficulties, userId, quizId }) => {
         let optionId = null;
 
         if (isCorrect) {
-            setScore((prevScore) => prevScore + 1); // TODO: Implement dynamic percentage score for when they are taking the quiz
+            setScore((prevScore) => prevScore + 1);
             console.log(`Current question ID: ${currentQuestion.correctAnswerId}`);
             optionId = currentQuestion.correctAnswerId;
         } else {
@@ -57,7 +57,7 @@ export const QuestionsPage = ({ categories, difficulties, userId, quizId }) => {
         console.log(`UserId: ${userId}, QuizId: ${quizId}, QuestionId: ${currentQuestion.questionId}, OptionId: ${optionId}, isCorrect: ${isCorrect}`);
 
         try {
-            const response = await fetch("http://localhost:8080/responses", {
+            await fetch("http://localhost:8080/responses", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded",
@@ -70,12 +70,29 @@ export const QuestionsPage = ({ categories, difficulties, userId, quizId }) => {
                     isCorrect: isCorrect,
                 }),
             });
-
-            if (!response.ok) {
-                console.error("Failed to submit user response:", response.statusText);
-            }
         } catch (error) {
+            console.error("Error submitting user response:", error);
+        }
 
+        console.log(questions.length);
+        console.log("Current index: ", currentQuestionIndex);
+
+        if (currentQuestionIndex === questions.length - 1) {
+            const finalScore = score + (isCorrect ? 1 : 0);
+            try {
+                await fetch("http://localhost:8080/scores", {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                    body: new URLSearchParams({
+                        quizId: quizId,
+                        score: finalScore,
+                    }),
+                });
+            } catch (error) {
+                console.error("Error updating score:", score);
+            }
         }
     };
 

@@ -5,10 +5,7 @@ import java.util.List;
 import com.interactive_quiz_game.spring_boot_quiz.service.UserResponseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.interactive_quiz_game.spring_boot_quiz.dto.QuestionDTO;
 import com.interactive_quiz_game.spring_boot_quiz.service.SessionService;
@@ -49,11 +46,6 @@ public class RestSpringBootController {
         return ResponseEntity.ok(questions);
     }
 
-    @PostMapping(value = "/scores")
-    public void getScore(@RequestParam("quizId") int quizId) {
-        userResponseService.insertScore(quizId);
-    }
-
     @PostMapping(value = "/responses")
     public void getUserResponse(
             @RequestParam("userId") int userId,
@@ -62,5 +54,10 @@ public class RestSpringBootController {
             @RequestParam("optionId") int optionId,
             @RequestParam("isCorrect") boolean isCorrect) {
         userResponseService.insertUserResponse(userId, quizId, questionId, optionId, isCorrect);
+    }
+
+    @PutMapping(value = "/scores")
+    public void getScore(@RequestParam("quizId") int quizId, @RequestParam("score") int score) {
+        userResponseService.updateScore(quizId, score);
     }
 }
