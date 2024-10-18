@@ -27,6 +27,9 @@ public class UserResponse {
     @Column(name = "userId")
     private int userId;
 
+    @Column(name = "quizId")
+    private int quizId;
+
     @Column(name = "questionId")
     private int questionId;
 
@@ -58,6 +61,14 @@ public class UserResponse {
 
     public void setQuestionId(int questionId) {
         this.questionId = questionId;
+    }
+
+    public int getQuizId() {
+        return quizId;
+    }
+
+    public void setQuizId(int quizId) {
+        this.quizId = quizId;
     }
 
     public int getUserId() {

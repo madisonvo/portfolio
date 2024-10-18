@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class QuestionService {
+public class SessionService {
     private RestTemplate restTemplate;
     private ObjectMapper objectMapper;
     private UserRepository userRepository;
@@ -28,7 +28,7 @@ public class QuestionService {
     private QuestionRepository questionRepository;
     private OptionRepository optionRepository;
 
-    public QuestionService(
+    public SessionService(
             UserRepository userRepository,
             QuizRepository quizRepository,
             QuestionRepository questionRepository,
@@ -101,27 +101,26 @@ public class QuestionService {
         for (int i = 0; i < questions.size(); i++) {
             QuestionDTO dto = questionDTOs.get(i);
             Question savedQuestion = questions.get(i);
-            insertOptions(savedQuestion.getQuestionId(), dto.getCorrectAnswer(), dto.getIncorrectAnswers());
+            dto.setQuestionId(savedQuestion.getQuestionId());
+            insertOptions(savedQuestion.getQuestionId(), dto);
         }
     }
 
-    public void insertOptions(int questionId, String correctAnswer, List<String> incorrectAnswers) {
-        List<Option> options = new ArrayList<>();
-
+    public void insertOptions(int questionId, QuestionDTO dto) {
         Option correctOption = new Option();
         correctOption.setQuestionId(questionId);
-        correctOption.setOption(correctAnswer);
+        correctOption.setOption(dto.getCorrectAnswer());
         correctOption.setCorrect(true);
-        options.add(correctOption);
+        optionRepository.save(correctOption);
+        dto.setCorrectAnswerId(correctOption.getOptionId());
 
-        for (String incorrectAnswer : incorrectAnswers) {
+        for (String incorrectAnswer : dto.getIncorrectAnswers()) {
             Option incorrectOption = new Option();
             incorrectOption.setQuestionId(questionId);
             incorrectOption.setOption(incorrectAnswer);
             incorrectOption.setCorrect(false);
-            options.add(incorrectOption);
+            optionRepository.save(incorrectOption);
+            dto.getIncorrectAnswersIds().add(incorrectOption.getOptionId());
         }
-
-        optionRepository.saveAll(options);
     }
 }
