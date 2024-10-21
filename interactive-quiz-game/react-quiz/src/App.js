@@ -18,7 +18,7 @@ function App() {
   return (
     <Router>
       <div>
-        <NavBar />
+        <NavBar/>
         <Routes>
           <Route path="/" element={<UsernamePage setUsername={setUsername} setUserId={setUserId} />} />
           <Route path="/categories" element={<CategoriesPage setCategories={setCategories} />} />

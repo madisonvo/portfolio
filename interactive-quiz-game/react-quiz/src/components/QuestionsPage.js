@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Buttons.css";
 
 export const QuestionsPage = ({ categories, difficulties, userId, quizId }) => {
@@ -8,12 +9,15 @@ export const QuestionsPage = ({ categories, difficulties, userId, quizId }) => {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [score, setScore] = useState(0);
+    const [timeLeft, setTimeLeft] = useState(30);
+    const [quizCompleted, setQuizCompleted] = useState(false);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchQuestions = async () => {
             try {
                 const response = await fetch(`http://localhost:8080/questions?categories=${categories}&difficulties=${difficulties}&quizId=${quizId}`);
-
                 if (!response.ok) {
                     throw new Error("Failed to fetch questions");
                 }
@@ -31,14 +35,28 @@ export const QuestionsPage = ({ categories, difficulties, userId, quizId }) => {
         fetchQuestions();
     }, [categories, difficulties, quizId]);
 
+    useEffect(() => {
+        if (timeLeft === 0) {
+            handleNextQuestion();
+        }
+
+        const timer = setInterval(() => {
+            setTimeLeft((prevTimeLeft) => (prevTimeLeft > 0 ? prevTimeLeft - 1 : 0));
+        }, 1000);
+
+        return () => clearInterval(timer);
+    }, [timeLeft, currentQuestionIndex]);
+
     const handleAnswerClick = (selectedOption) => {
         setSelectedAnswer(selectedOption);
         console.log(`Selected answer: ${selectedOption}`);
     };
 
     const handleNextQuestion = async () => {
-        const isCorrect = selectedAnswer === questions[currentQuestionIndex].correctAnswer;
-        
+        const currentQuestion = questions[currentQuestionIndex];
+        if (!currentQuestion) return;
+
+        const isCorrect = selectedAnswer === currentQuestion.correctAnswer;
         let optionId = null;
 
         if (isCorrect) {
@@ -47,12 +65,10 @@ export const QuestionsPage = ({ categories, difficulties, userId, quizId }) => {
             optionId = currentQuestion.correctAnswerId;
         } else {
             const index = currentQuestion.incorrectAnswers.indexOf(selectedAnswer);
-            console.log(`Index: ${index}`);
-            optionId = currentQuestion.incorrectAnswersIds[index];
+            if (index !== -1) {
+                optionId = currentQuestion.incorrectAnswersIds[index];
+            }
         }
-
-        setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
-        setSelectedAnswer(null);
 
         console.log(`UserId: ${userId}, QuizId: ${quizId}, QuestionId: ${currentQuestion.questionId}, OptionId: ${optionId}, isCorrect: ${isCorrect}`);
 
@@ -65,8 +81,8 @@ export const QuestionsPage = ({ categories, difficulties, userId, quizId }) => {
                 body: new URLSearchParams({
                     userId: userId,
                     quizId: quizId,
-                    questionId: currentQuestion.questionId, //
-                    optionId: optionId, //
+                    questionId: currentQuestion.questionId,
+                    optionId: (optionId != null) ? optionId : "",
                     isCorrect: isCorrect,
                 }),
             });
@@ -74,11 +90,9 @@ export const QuestionsPage = ({ categories, difficulties, userId, quizId }) => {
             console.error("Error submitting user response:", error);
         }
 
-        console.log(questions.length);
-        console.log("Current index: ", currentQuestionIndex);
-
         if (currentQuestionIndex === questions.length - 1) {
             const finalScore = score + (isCorrect ? 1 : 0);
+            setQuizCompleted(true);
             try {
                 await fetch("http://localhost:8080/scores", {
                     method: "PUT",
@@ -94,7 +108,15 @@ export const QuestionsPage = ({ categories, difficulties, userId, quizId }) => {
                 console.error("Error updating score:", score);
             }
         }
+
+        setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+        setSelectedAnswer(null);
+        setTimeLeft(30);
     };
+
+    const handleRestartQuiz = () => {
+        navigate("/categories");
+    }
 
     if (loading) {
         return <div>Loading questions...</div>;
@@ -113,38 +135,39 @@ export const QuestionsPage = ({ categories, difficulties, userId, quizId }) => {
     return (
         <div className="questions-page">
             <div className="question-container">
-                {currentQuestionIndex > 0 && currentQuestionIndex < 10 ? (
+                {currentQuestionIndex > 0 && currentQuestionIndex < 10 && (
                     <div>
                         <p>Current score: {score} out of {currentQuestionIndex}</p>
                     </div>
-                ) : (
-                    <div>
-                    </div>
                 )}
-                {currentQuestion ? (
-                    <div className="question">
-                        <p>{currentQuestion.question.text}</p>
-                        <div className="options">
-                            {[...currentQuestion.incorrectAnswers, currentQuestion.correctAnswer].map((option, i) => (
-                                <div key={i}>
-                                    <button onClick={() => handleAnswerClick(option, i)}
-                                        className={selectedAnswer === option ? "selected" : ""}>
-                                        {option}
-                                    </button>
-                                </div>
-                            ))}
-                        </div>
-                        {selectedAnswer !== null && (
-                            <button onClick={handleNextQuestion}>
-                                {currentQuestionIndex === questions.length - 1 ? "Finish Quiz" : "Next Question"}
-                            </button>
-                        )}
-                    </div>
-                ) : (
+                {quizCompleted ? (
                     <div>
                         <h3>Quiz Completed!</h3>
                         <p>Your score: {score} out of {questions.length}</p>
+                        <button onClick={handleRestartQuiz}>Start Another Quiz</button>
                     </div>
+                ) : (
+                    currentQuestion && (
+                        <div className="question">
+                            <p>{currentQuestion.question.text}</p>
+                            <div className="options">
+                                {[...currentQuestion.incorrectAnswers, currentQuestion.correctAnswer].map((option, i) => (
+                                    <div key={i}>
+                                        <button onClick={() => handleAnswerClick(option)}
+                                            className={selectedAnswer === option ? "selected" : ""}>
+                                            {option}
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                            {selectedAnswer !== null && (
+                                <button onClick={handleNextQuestion}>
+                                    {currentQuestionIndex === questions.length - 1 ? "Finish Quiz" : "Next Question"}
+                                </button>
+                            )}
+                            <p>Time Left: 0:{timeLeft}</p>
+                        </div>
+                    )
                 )}
             </div>
         </div>
