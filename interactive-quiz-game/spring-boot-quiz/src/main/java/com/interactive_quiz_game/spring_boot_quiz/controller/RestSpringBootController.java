@@ -51,7 +51,7 @@ public class RestSpringBootController {
             @RequestParam("userId") int userId,
             @RequestParam("quizId") int quizId,
             @RequestParam("questionId") int questionId,
-            @RequestParam("optionId") int optionId,
+            @RequestParam(value = "optionId", required = false) Integer optionId,
             @RequestParam("isCorrect") boolean isCorrect) {
         userResponseService.insertUserResponse(userId, quizId, questionId, optionId, isCorrect);
     }

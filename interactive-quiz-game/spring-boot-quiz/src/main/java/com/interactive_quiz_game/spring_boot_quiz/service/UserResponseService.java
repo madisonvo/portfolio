@@ -23,7 +23,7 @@ public class UserResponseService {
         this.userResponseRepository = userResponseRepository;
     }
 
-    public void insertUserResponse(int userId, int quizId, int questionId, int optionId, boolean isCorrect) {
+    public void insertUserResponse(int userId, int quizId, int questionId, Integer optionId, boolean isCorrect) {
         UserResponse userResponse = new UserResponse();
         userResponse.setUserId(userId);
         userResponse.setQuizId(quizId);

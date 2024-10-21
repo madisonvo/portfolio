@@ -34,7 +34,7 @@ public class UserResponse {
     private int questionId;
 
     @Column(name = "optionId")
-    private int optionId;
+    private Integer optionId;
 
     @Column(name = "isCorrect")
     private boolean isCorrect;
@@ -47,11 +47,11 @@ public class UserResponse {
         isCorrect = correct;
     }
 
-    public int getOptionId() {
+    public Integer getOptionId() {
         return optionId;
     }
 
-    public void setOptionId(int optionId) {
+    public void setOptionId(Integer optionId) {
         this.optionId = optionId;
     }
 
