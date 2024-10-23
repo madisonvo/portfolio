@@ -163,6 +163,7 @@ export const QuestionsPage = ({ categories, difficulties, userId, quizId }) => {
                         <h3>Quiz Completed!</h3>
                         <p>Your score: {score} out of {questions.length}</p>
                         <button onClick={handleRestartQuiz}>Start Another Quiz</button>
+                        <button onClick={(() => navigate("/"))}>Home</button>
                     </div>
                 ) : (
                     currentQuestion && (
