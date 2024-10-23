@@ -6,12 +6,14 @@ export const QuestionsPage = ({ categories, difficulties, userId, quizId }) => {
     const [questions, setQuestions] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-    const [selectedAnswer, setSelectedAnswer] = useState(null);
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0); 
+    const [selectedAnswerLocal, setSelectedAnswerLocal] = useState(null);
     const [score, setScore] = useState(0);
     const [timeLeft, setTimeLeft] = useState(30);
     const [quizCompleted, setQuizCompleted] = useState(false);
+    const [shuffledOptions, setShuffledOptions] = useState([]);
 
+    let finalAnswer = null;
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -36,6 +38,16 @@ export const QuestionsPage = ({ categories, difficulties, userId, quizId }) => {
     }, [categories, difficulties, quizId]);
 
     useEffect(() => {
+        if (questions.length > 0 && currentQuestionIndex < questions.length) {
+            const currentQuestion = questions[currentQuestionIndex];
+            const allOptions = [...currentQuestion.incorrectAnswers, currentQuestion.correctAnswer];
+
+            const shuffled = allOptions.sort(() => Math.random() - 0.5);
+            setShuffledOptions(shuffled);
+        }
+    }, [currentQuestionIndex, questions]);
+
+    useEffect(() => {
         if (timeLeft === 0) {
             handleNextQuestion();
         }
@@ -45,26 +57,32 @@ export const QuestionsPage = ({ categories, difficulties, userId, quizId }) => {
         }, 1000);
 
         return () => clearInterval(timer);
-    }, [timeLeft, currentQuestionIndex]);
+    });
 
     const handleAnswerClick = (selectedOption) => {
-        setSelectedAnswer(selectedOption);
+        setSelectedAnswerLocal(selectedOption);
         console.log(`Selected answer: ${selectedOption}`);
     };
 
+    const handleSubmit = () => {
+        console.log(`Local answer: ${selectedAnswerLocal}`);
+        finalAnswer = selectedAnswerLocal;
+        handleNextQuestion();
+    }
+
     const handleNextQuestion = async () => {
+        console.log(finalAnswer);
         const currentQuestion = questions[currentQuestionIndex];
         if (!currentQuestion) return;
 
-        const isCorrect = selectedAnswer === currentQuestion.correctAnswer;
+        const isCorrect = finalAnswer === currentQuestion.correctAnswer;
         let optionId = null;
 
         if (isCorrect) {
             setScore((prevScore) => prevScore + 1);
-            console.log(`Current question ID: ${currentQuestion.correctAnswerId}`);
             optionId = currentQuestion.correctAnswerId;
         } else {
-            const index = currentQuestion.incorrectAnswers.indexOf(selectedAnswer);
+            const index = currentQuestion.incorrectAnswers.indexOf(finalAnswer);
             if (index !== -1) {
                 optionId = currentQuestion.incorrectAnswersIds[index];
             }
@@ -110,7 +128,7 @@ export const QuestionsPage = ({ categories, difficulties, userId, quizId }) => {
         }
 
         setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
-        setSelectedAnswer(null);
+        setSelectedAnswerLocal(null);
         setTimeLeft(30);
     };
 
@@ -151,21 +169,21 @@ export const QuestionsPage = ({ categories, difficulties, userId, quizId }) => {
                         <div className="question">
                             <p>{currentQuestion.question.text}</p>
                             <div className="options">
-                                {[...currentQuestion.incorrectAnswers, currentQuestion.correctAnswer].map((option, i) => (
+                                {shuffledOptions.map((option, i) => (
                                     <div key={i}>
                                         <button onClick={() => handleAnswerClick(option)}
-                                            className={selectedAnswer === option ? "selected" : ""}>
+                                            className={selectedAnswerLocal === option ? "selected" : ""}>
                                             {option}
                                         </button>
                                     </div>
                                 ))}
                             </div>
-                            {selectedAnswer !== null && (
-                                <button onClick={handleNextQuestion}>
+                            {selectedAnswerLocal !== null && (
+                                <button onClick={handleSubmit}>
                                     {currentQuestionIndex === questions.length - 1 ? "Finish Quiz" : "Next Question"}
                                 </button>
                             )}
-                            <p>Time Left: 0:{timeLeft}</p>
+                            {timeLeft > 9 ? <p>Time Left: 0:{timeLeft}</p> : <p>Time Left: 0:0{timeLeft}</p>}
                         </div>
                     )
                 )}

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./Buttons.css";
 
 export const DifficultiesPage = ({userId, categories, setDifficulties, setQuizId}) => {
-    const [difficulties, setDifficultiesLocal] = useState("");
+    const [difficulties, setDifficultiesLocal] = useState(null);
     const navigate = useNavigate();
 
     const handleClick = (difficulties) => {

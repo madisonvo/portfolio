@@ -56,7 +56,7 @@ CREATE TABLE Question (
 	questionId INT NOT NULL AUTO_INCREMENT,
     quizId INT NOT NULL,
     difficulty VARCHAR(6) NOT NULL,
-    question VARCHAR(255) NOT NULL,
+    question VARCHAR(400) NOT NULL,
     PRIMARY KEY (questionId),
     FOREIGN KEY (quizId) REFERENCES Quiz(quizId)
 );
@@ -137,7 +137,7 @@ CREATE TABLE UserResponse (
     userId INT NOT NULL,
     quizId INT NOT NULL,
     questionId INT NOT NULL,
-    optionId INT NOT NULL,
+    optionId INT,
     isCorrect BOOLEAN NOT NULL,
     PRIMARY KEY (userResponseId),
     FOREIGN KEY (userId) REFERENCES User(userId),

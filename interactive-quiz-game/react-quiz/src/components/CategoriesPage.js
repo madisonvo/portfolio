@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./Buttons.css";
 
 export const CategoriesPage = ({setCategories}) => {
-    const [categories, setCategoriesLocal] = useState("");
+    const [categories, setCategoriesLocal] = useState(null);
     const navigate = useNavigate();
 
     const handleClick = (categories) => {
