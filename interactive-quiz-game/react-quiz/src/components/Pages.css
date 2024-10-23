@@ -1,0 +1,85 @@
+.starter-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 600px;
+}
+
+.starter-page form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.starter-page input {
+    width: 200px;
+    height: 25px;
+    border-radius: 15px;
+}
+
+.starter-page input, 
+.starter-page button, 
+.categories-page button,
+.difficulties-page button,
+.questions-page button {
+    background-color: black;
+    color: white;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    padding: 5px;
+    font-size: 16px;
+}
+
+.starter-page button {
+    margin-left: 63px;
+}
+
+.starter-page button, 
+.categories-page button#submit,
+.difficulties-page button#submit,
+.questions-page button#submit {
+    justify-content: center;
+    width: 80px;
+}
+
+.categories-page,
+.difficulties-page,
+.questions-page,
+.question,
+.quiz-completed {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 600px;
+    gap: 20px;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.categories-page button#first-row, 
+.categories-page button#second-row, 
+.categories-page button#third-row,
+.difficulties-page button#difficulty,
+.questions-page button#first-row,
+.questions-page button#second-row {
+    width: 165px;
+    margin-left: 10px;
+}
+
+.categories-page button.selected,
+.difficulties-page button.selected,
+.questions-page button.selected {
+    background-color: #b940bf;
+    color: white;
+    border: 2px solid #b940bf;
+}
+
+.questions-page {
+    color: white;
+}
+
+.questions-page button#submit {
+    width: 130px;
+}

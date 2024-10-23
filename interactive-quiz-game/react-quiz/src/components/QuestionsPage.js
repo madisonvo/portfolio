@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Buttons.css";
+import "./Pages.css";
 
 export const QuestionsPage = ({ categories, difficulties, userId, quizId }) => {
     const [questions, setQuestions] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0); 
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [selectedAnswerLocal, setSelectedAnswerLocal] = useState(null);
     const [score, setScore] = useState(0);
     const [timeLeft, setTimeLeft] = useState(30);
@@ -152,43 +152,55 @@ export const QuestionsPage = ({ categories, difficulties, userId, quizId }) => {
 
     return (
         <div className="questions-page">
-            <div className="question-container">
+            <div className="current-score">
                 {currentQuestionIndex > 0 && currentQuestionIndex < 10 && (
                     <div>
-                        <p>Current score: {score} out of {currentQuestionIndex}</p>
+                        <p>Current score: {score}/{currentQuestionIndex}</p>
                     </div>
-                )}
-                {quizCompleted ? (
-                    <div>
-                        <h3>Quiz Completed!</h3>
-                        <p>Your score: {score} out of {questions.length}</p>
-                        <button onClick={handleRestartQuiz}>Start Another Quiz</button>
-                        <button onClick={(() => navigate("/"))}>Home</button>
-                    </div>
-                ) : (
-                    currentQuestion && (
-                        <div className="question">
-                            <p>{currentQuestion.question.text}</p>
-                            <div className="options">
-                                {shuffledOptions.map((option, i) => (
-                                    <div key={i}>
-                                        <button onClick={() => handleAnswerClick(option)}
-                                            className={selectedAnswerLocal === option ? "selected" : ""}>
-                                            {option}
-                                        </button>
-                                    </div>
-                                ))}
-                            </div>
-                            {selectedAnswerLocal !== null && (
-                                <button onClick={handleSubmit}>
-                                    {currentQuestionIndex === questions.length - 1 ? "Finish Quiz" : "Next Question"}
-                                </button>
-                            )}
-                            {timeLeft > 9 ? <p>Time Left: 0:{timeLeft}</p> : <p>Time Left: 0:0{timeLeft}</p>}
-                        </div>
-                    )
                 )}
             </div>
+            {quizCompleted ? (
+                <div className="quiz-completed">
+                    <h3>Quiz Completed!</h3>
+                    <p>Your score: {score}/{questions.length}</p>
+                    <button onClick={(() => navigate("/"))} id="quiz-completed">Home</button>
+                    <button onClick={handleRestartQuiz} id="quiz-completed">Start Another Quiz</button>
+                </div>
+            ) : (
+                currentQuestion && (
+                    <div className="question">
+                        <div className="current-question">
+                            {currentQuestion.question.text}
+                        </div>
+                        <div>
+                            {shuffledOptions.slice(0, 2).map((option, i) => (
+                                <button key={i} onClick={() => handleAnswerClick(option)}
+                                    className={selectedAnswerLocal === option ? "selected" : ""}
+                                    id="first-row">
+                                    {option}
+                                </button>
+                            ))}
+                        </div>
+                        <div>
+                            {shuffledOptions.slice(2, 4).map((option, i) => (
+                                <button key={i + 2} onClick={() => handleAnswerClick(option)}
+                                    className={selectedAnswerLocal === option ? "selected" : ""}
+                                    id="first-row">
+                                    {option}
+                                </button>
+                            ))}
+                        </div>
+                        {selectedAnswerLocal !== null && (
+                            <button onClick={handleSubmit} id="submit">
+                                {currentQuestionIndex === questions.length - 1 ? "Finish Quiz" : "Next Question"}
+                            </button>
+                        )}
+                        <div className="timer">
+                            {timeLeft > 9 ? <p>Time Left: 0:{timeLeft}</p> : <p>Time Left: 0:0{timeLeft}</p>}
+                        </div>
+                    </div>
+                )
+            )}
         </div>
     );
 };

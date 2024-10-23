@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Buttons.css";
+import "./Pages.css";
 
 export const DifficultiesPage = ({userId, categories, setDifficulties, setQuizId}) => {
     const [difficulties, setDifficultiesLocal] = useState(null);
@@ -12,7 +12,7 @@ export const DifficultiesPage = ({userId, categories, setDifficulties, setQuizId
     }
 
     const handleSubmit = async () => {
-        if (difficulties === "") {
+        if (difficulties === null) {
             alert("You need to choose a difficulty!");
             return;
         }
@@ -46,19 +46,18 @@ export const DifficultiesPage = ({userId, categories, setDifficulties, setQuizId
     const allDifficulties = ["easy", "medium", "hard"];
 
     return (
-        <div>
+        <div className="difficulties-page">
+            Pick a difficulty:
             <div>
-                Pick a difficulty:
                 {allDifficulties.map((difficulty, i) => (
-                    <div key={i}>
-                        <button onClick={() => handleClick(difficulty)}
-                            className={difficulties === difficulty ? "selected" : ""}>
+                        <button key={i} onClick={() => handleClick(difficulty)}
+                            className={difficulties === difficulty ? "selected" : ""}
+                            id="difficulty">
                             {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}
                         </button>
-                    </div>
                 ))}
             </div>
-            <button onClick={handleSubmit}>Submit</button>
+            <button onClick={handleSubmit} id="submit">Submit</button>
         </div>
     );
 };

@@ -6,6 +6,7 @@ import {UsernamePage} from "./components/UsernamePage";
 import {CategoriesPage} from "./components/CategoriesPage";
 import {DifficultiesPage} from "./components/DifficultiesPage";
 import {QuestionsPage} from "./components/QuestionsPage";
+import backgroundVideo from "./images/question-mark.mp4";
 
 function App() {
   // eslint-disable-next-line no-unused-vars
@@ -17,7 +18,10 @@ function App() {
 
   return (
     <Router>
-      <div>
+      <video id="background-video" autoPlay loop muted>
+          <source src={backgroundVideo} type="video/mp4"/>
+      </video>
+      <div className="main-content">
         <NavBar/>
         <Routes>
           <Route path="/" element={<UsernamePage setUsername={setUsername} setUserId={setUserId} />} />

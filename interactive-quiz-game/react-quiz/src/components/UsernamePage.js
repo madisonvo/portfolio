@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./Pages.css";
 
 export const UsernamePage = ({ setUsername, setUserId }) => {
     const [username, setUsernameLocal] = useState("");
@@ -41,8 +42,7 @@ export const UsernamePage = ({ setUsername, setUserId }) => {
                     type="text"
                     value={username}
                     onChange={(e) => setUsernameLocal(e.target.value)}
-                    placeholder="Enter your username"
-                />
+                    placeholder="Enter your username"/>
                 <button type="submit">Next</button>
             </form>
         </div>
