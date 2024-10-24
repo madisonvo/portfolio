@@ -25,7 +25,7 @@ export const CategoriesPage = ({ setCategories }) => {
     }
 
     const allCategories = ["Music", "Sport and Leisure", "Film and TV",
-        "Arts and Literature", "History", "Society and culture",
+        "Arts and Literature", "History", "Society and Culture",
         "Science", "Geography", "Food and Drink", "General Knowledge"];
 
     return (

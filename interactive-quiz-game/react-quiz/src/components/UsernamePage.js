@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Pages.css";
 
-export const UsernamePage = ({ setUsername, setUserId }) => {
+export const UsernamePage = ({ setUserId }) => {
     const [username, setUsernameLocal] = useState("");
     const navigate = useNavigate();
 
@@ -26,7 +26,6 @@ export const UsernamePage = ({ setUsername, setUserId }) => {
 
             const userId = await response.json();
             setUserId(userId);
-            setUsername(username);
             console.log(`Username: ${username}, userId: ${userId}`);
 
             navigate("/categories");
@@ -37,7 +36,7 @@ export const UsernamePage = ({ setUsername, setUserId }) => {
 
     return (
         <div className="starter-page">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} name="username-form">
                 <input
                     type="text"
                     value={username}

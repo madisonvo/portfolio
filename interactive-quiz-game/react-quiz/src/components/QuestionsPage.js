@@ -12,6 +12,9 @@ export const QuestionsPage = ({ categories, difficulties, userId, quizId }) => {
     const [timeLeft, setTimeLeft] = useState(30);
     const [quizCompleted, setQuizCompleted] = useState(false);
     const [shuffledOptions, setShuffledOptions] = useState([]);
+    const [buttonColors, setButtonColors] = useState({});
+    const [answered, setAnswered] = useState(false);
+    const [reviewing, setReviewing] = useState(false);
 
     let finalAnswer = null;
     const navigate = useNavigate();
@@ -44,11 +47,13 @@ export const QuestionsPage = ({ categories, difficulties, userId, quizId }) => {
 
             const shuffled = allOptions.sort(() => Math.random() - 0.5);
             setShuffledOptions(shuffled);
+            setButtonColors({});
+            setAnswered(false);
         }
     }, [currentQuestionIndex, questions]);
 
     useEffect(() => {
-        if (timeLeft === 0) {
+        if (timeLeft === 0 && !answered) {
             handleNextQuestion();
         }
 
@@ -67,7 +72,28 @@ export const QuestionsPage = ({ categories, difficulties, userId, quizId }) => {
     const handleSubmit = () => {
         console.log(`Local answer: ${selectedAnswerLocal}`);
         finalAnswer = selectedAnswerLocal;
-        handleNextQuestion();
+        const currentQuestion = questions[currentQuestionIndex];
+        const isCorrect = finalAnswer === currentQuestion.correctAnswer;
+
+        const newButtonColors = shuffledOptions.reduce((acc, option) => {
+            if (option === currentQuestion.correctAnswer) {
+                acc[option] = "green";
+            } else if (option === finalAnswer) {
+                acc[option] = isCorrect ? "green" : "red";
+            } else {
+                acc[option] = "";
+            }
+            return acc;
+        }, {});
+
+        setButtonColors(newButtonColors);
+        setAnswered(true);
+        setReviewing(true);
+
+        setTimeout(() => {
+            handleNextQuestion();
+            setReviewing(false);
+        }, isCorrect ? 1000 : 2000);
     }
 
     const handleNextQuestion = async () => {
@@ -137,15 +163,11 @@ export const QuestionsPage = ({ categories, difficulties, userId, quizId }) => {
     }
 
     if (loading) {
-        return <div>Loading questions...</div>;
+        return <div style={{color: "white"}}>Loading questions...</div>;
     }
 
     if (error) {
-        return <div>Error: {error}</div>;
-    }
-
-    if (questions.length === 0) {
-        return <div>No questions available.</div>;
+        return <div style={{color: "white"}}>Error: {error}</div>;
     }
 
     const currentQuestion = questions[currentQuestionIndex];
@@ -176,7 +198,10 @@ export const QuestionsPage = ({ categories, difficulties, userId, quizId }) => {
                             {shuffledOptions.slice(0, 2).map((option, i) => (
                                 <button key={i} onClick={() => handleAnswerClick(option)}
                                     className={selectedAnswerLocal === option ? "selected" : ""}
-                                    id="first-row">
+                                    id="first-row"
+                                    style={{backgroundColor: buttonColors[option], 
+                                        border: buttonColors[option]}}
+                                    disabled={answered}>
                                     {option}
                                 </button>
                             ))}
@@ -185,18 +210,21 @@ export const QuestionsPage = ({ categories, difficulties, userId, quizId }) => {
                             {shuffledOptions.slice(2, 4).map((option, i) => (
                                 <button key={i + 2} onClick={() => handleAnswerClick(option)}
                                     className={selectedAnswerLocal === option ? "selected" : ""}
-                                    id="first-row">
+                                    id="first-row"
+                                    style={{backgroundColor: buttonColors[option],
+                                        border: buttonColors[option]}}
+                                    disabled={answered}>
                                     {option}
                                 </button>
                             ))}
                         </div>
-                        {selectedAnswerLocal !== null && (
+                        {selectedAnswerLocal !== null && !reviewing && (
                             <button onClick={handleSubmit} id="submit">
-                                {currentQuestionIndex === questions.length - 1 ? "Finish Quiz" : "Next Question"}
+                                {currentQuestionIndex === questions.length - 1 ? "Finish Quiz" : "Submit"}
                             </button>
                         )}
                         <div className="timer">
-                            {timeLeft > 9 ? <p>Time Left: 0:{timeLeft}</p> : <p>Time Left: 0:0{timeLeft}</p>}
+                            {!reviewing && (timeLeft > 9 ? <p>Time Left: 0:{timeLeft}</p> : <p>Time Left: 0:0{timeLeft}</p>)}
                         </div>
                     </div>
                 )
