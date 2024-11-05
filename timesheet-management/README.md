@@ -6,3 +6,5 @@ Nov 4, 2024
 Nov 5, 2024
  * Add dependencies/properties to allow for pub/sub - pom.xml, application.properties
  * Create new sql script to update holiday dates - update-holidays.sql
+ * Update Holiday entity by removing int month and int day and replacing with Date holidayDate - Holiday.java
+ * Implement functionality to execute sql query every January 1st to update holiday dates for every year
