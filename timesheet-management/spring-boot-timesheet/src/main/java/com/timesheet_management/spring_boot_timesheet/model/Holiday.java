@@ -2,6 +2,7 @@ package com.timesheet_management.spring_boot_timesheet.model;
 
 import lombok.Data;
 import javax.persistence.*;
+import java.sql.Date;
 
 @Entity
 @Table(name = "Holiday")
@@ -10,23 +11,20 @@ public class Holiday {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "holidayId")
-    private int holidayInt;
+    private int holidayId;
 
     @Column(name = "holidayName")
     private String holidayName;
 
-    @Column(name = "holidayMonth")
-    private int holidayMonth;
-
-    @Column(name = "holidayDay")
-    private int holidayDay;
+    @Column(name = "holidayDate")
+    private Date holidayDate;
 
     public int getHolidayInt() {
-        return holidayInt;
+        return holidayId;
     }
 
-    public void setHolidayInt(int holidayInt) {
-        this.holidayInt = holidayInt;
+    public void setHolidayInt(int holidayId) {
+        this.holidayId = holidayId;
     }
 
     public String getHolidayName() {
@@ -37,19 +35,11 @@ public class Holiday {
         this.holidayName = holidayName;
     }
 
-    public int getHolidayMonth() {
-        return holidayMonth;
+    public Date getHolidayDate() {
+        return holidayDate;
     }
 
-    public void setHolidayMonth(int holidayMonth) {
-        this.holidayMonth = holidayMonth;
-    }
-
-    public int getHolidayDay() {
-        return holidayDay;
-    }
-
-    public void setHolidayDay(int holidayDay) {
-        this.holidayDay = holidayDay;
+    public void setHolidayDate(Date holidayDate) {
+        this.holidayDate = this.holidayDate;
     }
 }

@@ -29,6 +29,11 @@ public class UserService {
             String lastName,
             String email,
             String password) {
+        if (!email.endsWith("@nucleusteq.com")) {
+            System.out.println("Not a valid organization email");
+            return false;
+        }
+
         if (!userRepository.userExists(email)) {
             User user = new User();
 //            user.setUserType(UserType.valueOf(userType));
@@ -45,6 +50,7 @@ public class UserService {
             return true;
         }
 
+        System.out.println("User with given email already exists");
         return false;
     }
 
