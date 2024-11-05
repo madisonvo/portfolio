@@ -5,3 +5,4 @@ Nov 4, 2024
 
 Nov 5, 2024
  * Add dependencies/properties to allow for pub/sub - pom.xml, application.properties
+ * Create new sql script to update holiday dates - update-holidays.sql
