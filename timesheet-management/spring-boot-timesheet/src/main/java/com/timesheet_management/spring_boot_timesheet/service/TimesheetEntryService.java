@@ -5,7 +5,6 @@ import com.timesheet_management.spring_boot_timesheet.repository.TimesheetEntryR
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
-import java.util.Calendar;
 
 @Service
 public class TimesheetEntryService {
@@ -22,6 +21,7 @@ public class TimesheetEntryService {
             Date date,
             int hours) {
         if (isHoliday(date)) {
+            System.out.println("You cannot enter time for a holiday");
             return false;
         } else {
             TimesheetEntry timesheetEntry = new TimesheetEntry();
@@ -37,11 +37,6 @@ public class TimesheetEntryService {
     }
 
     private boolean isHoliday(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        int month = calendar.get(Calendar.MONTH) + 1;
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-        System.out.println("Month: " + month + " Day: " + day);
-        return timesheetEntryRepository.isHoliday(month, day);
+        return timesheetEntryRepository.isHoliday(date);
     }
 }

@@ -9,6 +9,6 @@ import java.sql.Date;
 
 @Repository
 public interface TimesheetEntryRepository extends CrudRepository<TimesheetEntry, Integer> {
-    @Query(value = "SELECT COUNT(*) = 1 FROM Holiday WHERE holidayMonth = :month AND holidayDay = :day", nativeQuery = true)
-    boolean isHoliday(int month, int day);
+    @Query(value = "SELECT COUNT(*) = 1 FROM Holiday WHERE holidayDate = :date", nativeQuery = true)
+    boolean isHoliday(Date date);
 }

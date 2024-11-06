@@ -12,7 +12,7 @@
 	<artifactId>spring-boot-timesheet</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>spring-boot-timesheet</name>
-	<description>Spring Boot Timesheet Application for React </description>
+	<description>Spring Boot Timesheet Application</description>
 	<url/>
 	<licenses>
 		<license/>

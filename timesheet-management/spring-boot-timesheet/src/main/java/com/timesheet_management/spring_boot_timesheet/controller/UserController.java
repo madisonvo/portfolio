@@ -13,7 +13,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    // TODO: WORKS
     @PostMapping(value = "/login")
     public boolean checkLoginInfo(
             @RequestParam("email") String email,
@@ -21,7 +20,6 @@ public class UserController {
         return userService.verifyLogin(email, password);
     }
 
-    // TODO: RETURN NEWLY CREATED USERID
     @PostMapping(value = "/newUser")
     public boolean addNewUser(
             @RequestParam("userType") String userType,
@@ -32,7 +30,6 @@ public class UserController {
         return userService.addNewUser(userType, firstName, lastName, email, password);
     }
 
-    // TODO: SOMEHOW GET USERID FOR USER WE WANT TO UPDATE
     @PutMapping(value = "/assign")
     public void assignToUser(
             @RequestParam("userId") int userId,
