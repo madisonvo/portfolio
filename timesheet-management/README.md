@@ -17,3 +17,4 @@ Nov 8, 2024
  * Implement models, repositories, services, and controllers for each entity in spring_boot_employee
    - User, Client, Project, Request
  * Implement simple pub/sub services to have spring_boot_timesheet and spring_boot_employee communicate with each other
+ * Implement being able to add skills for a certain user
