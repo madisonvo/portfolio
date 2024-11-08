@@ -1,11 +1,10 @@
-package com.timesheet_management.spring_boot_timesheet.service;
+package com.employee_management.spring_boot_employee.service;
 
-import com.timesheet_management.spring_boot_timesheet.model.User;
-import com.timesheet_management.spring_boot_timesheet.repository.UserRepository;
-import com.timesheet_management.spring_boot_timesheet.type.UserType;
+import com.employee_management.spring_boot_employee.model.User;
+import com.employee_management.spring_boot_employee.repository.UserRepository;
+import com.employee_management.spring_boot_employee.type.UserType;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
 import java.util.Optional;
 
 @Service
@@ -36,8 +35,7 @@ public class UserService {
 
         if (!userRepository.userExists(email)) {
             User user = new User();
-//            user.setUserType(UserType.valueOf(userType));
-            user.setUserType(userType);
+            user.setUserType(UserType.valueOf(userType));
             user.setFirstName(firstName);
             user.setLastName(lastName);
             user.setEmail(email);

@@ -1,6 +1,6 @@
-package com.timesheet_management.spring_boot_timesheet.repository;
+package com.employee_management.spring_boot_employee.repository;
 
-import com.timesheet_management.spring_boot_timesheet.model.Project;
+import com.employee_management.spring_boot_employee.model.Project;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

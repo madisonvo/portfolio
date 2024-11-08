@@ -1,9 +1,8 @@
-package com.timesheet_management.spring_boot_timesheet.controller;
+package com.employee_management.spring_boot_employee.controller;
 
-import com.timesheet_management.spring_boot_timesheet.service.ProjectService;
+import com.employee_management.spring_boot_employee.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 

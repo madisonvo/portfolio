@@ -1,7 +1,6 @@
-package com.timesheet_management.spring_boot_timesheet.controller;
+package com.employee_management.spring_boot_employee.controller;
 
-import com.timesheet_management.spring_boot_timesheet.service.UserService;
-import com.timesheet_management.spring_boot_timesheet.type.UserType;
+import com.employee_management.spring_boot_employee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;

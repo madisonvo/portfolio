@@ -1,4 +1,4 @@
-package com.timesheet_management.spring_boot_timesheet.model;
+package com.employee_management.spring_boot_employee.model;
 
 import lombok.Data;
 import javax.persistence.*;

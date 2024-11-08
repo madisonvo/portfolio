@@ -1,7 +1,7 @@
-package com.timesheet_management.spring_boot_timesheet.service;
+package com.employee_management.spring_boot_employee.service;
 
-import com.timesheet_management.spring_boot_timesheet.model.Project;
-import com.timesheet_management.spring_boot_timesheet.repository.ProjectRepository;
+import com.employee_management.spring_boot_employee.model.Project;
+import com.employee_management.spring_boot_employee.repository.ProjectRepository;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;

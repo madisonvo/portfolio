@@ -1,21 +1,28 @@
-package com.timesheet_management.spring_boot_timesheet.model;
+package com.employee_management.spring_boot_employee.model;
 
-import com.timesheet_management.spring_boot_timesheet.type.UserType;
+import com.employee_management.spring_boot_employee.type.UserType;
+import io.hypersistence.utils.hibernate.type.basic.PostgreSQLEnumType;
 import lombok.Data;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+
 import javax.persistence.*;
+        import java.util.List;
 
 @Entity
 @Table(name = "\"User\"")
 @Data
+@TypeDef(name = "pgsql_enum", typeClass = PostgreSQLEnumType.class)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "userId")
     private int userId;
 
-//    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     @Column(name = "userType")
-    private String userType;
+    @Type(type = "pgsql_enum")
+    private UserType userType;
 
     @Column(name = "firstName")
     private String firstName;
@@ -38,6 +45,11 @@ public class User {
     @Column(name = "isActive")
     private boolean isActive;
 
+    @ElementCollection
+    @CollectionTable(name = "user_skills", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "skills")
+    private List<String> skills;
+
     public int getUserId() {
         return userId;
     }
@@ -46,11 +58,11 @@ public class User {
         this.userId = userId;
     }
 
-    public String getUserType() {
+    public UserType getUserType() {
         return userType;
     }
 
-    public void setUserType(String userType) {
+    public void setUserType(UserType userType) {
         this.userType = userType;
     }
 
@@ -108,5 +120,13 @@ public class User {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public List<String> getSkills() {
+        return skills;
+    }
+
+    public void setSkills(List<String> skills) {
+        this.skills = skills;
     }
 }

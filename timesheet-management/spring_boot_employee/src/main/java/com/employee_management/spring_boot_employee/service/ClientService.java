@@ -1,7 +1,7 @@
-package com.timesheet_management.spring_boot_timesheet.service;
+package com.employee_management.spring_boot_employee.service;
 
-import com.timesheet_management.spring_boot_timesheet.model.Client;
-import com.timesheet_management.spring_boot_timesheet.repository.ClientRepository;
+import com.employee_management.spring_boot_employee.model.Client;
+import com.employee_management.spring_boot_employee.repository.ClientRepository;
 import org.springframework.stereotype.Service;
 
 @Service
