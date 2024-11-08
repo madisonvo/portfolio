@@ -40,6 +40,6 @@ public class Holiday {
     }
 
     public void setHolidayDate(Date holidayDate) {
-        this.holidayDate = this.holidayDate;
+        this.holidayDate = holidayDate;
     }
 }

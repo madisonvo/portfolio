@@ -1,6 +1,5 @@
 package com.timesheet_management.spring_boot_timesheet.service;
 
-import com.timesheet_management.spring_boot_timesheet.repository.HolidayRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
