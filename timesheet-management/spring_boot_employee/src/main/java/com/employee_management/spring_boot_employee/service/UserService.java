@@ -5,6 +5,9 @@ import com.employee_management.spring_boot_employee.repository.UserRepository;
 import com.employee_management.spring_boot_employee.type.UserType;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -52,7 +55,21 @@ public class UserService {
         return false;
     }
 
-    // PUT MAPPING
+    private void updateIsActive(int userId) {
+        Optional<User> foundUser = userRepository.findById(userId);
+        if (foundUser.isPresent()) {
+            User user = foundUser.get();
+            if (userRepository.isActive(userId)) {
+                user.setActive(true);
+            } else {
+                user.setActive(false);
+            }
+            userRepository.save(user);
+        } else {
+            throw new RuntimeException("User not found with userId: " + userId);
+        }
+    }
+
     public void assignClientAndProject(int userId, int clientId, int projectId) {
         Optional<User> foundUser = userRepository.findById(userId);
         if (foundUser.isPresent()) {
@@ -67,19 +84,11 @@ public class UserService {
         updateIsActive(userId);
     }
 
-    // PUT MAPPING
-    private void updateIsActive(int userId) {
-        Optional<User> foundUser = userRepository.findById(userId);
-        if (foundUser.isPresent()) {
-            User user = foundUser.get();
-            if (userRepository.isActive(userId)) {
-                user.setActive(true);
-            } else {
-                user.setActive(false);
-            }
-            userRepository.save(user);
-        } else {
-            throw new RuntimeException("User not found with userId: " + userId);
+    @Transactional
+    public void addSkills(int userId, String skills) {
+        String[] skillsArray = skills.split(",");
+        for (String skill : skillsArray) {
+            userRepository.addSkills(userId, skill);
         }
     }
 }

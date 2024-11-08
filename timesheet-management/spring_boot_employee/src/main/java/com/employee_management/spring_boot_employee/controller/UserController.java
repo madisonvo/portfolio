@@ -36,4 +36,11 @@ public class UserController {
             @RequestParam("projectId") int projectId) {
         userService.assignClientAndProject(userId, clientId, projectId);
     }
+
+    @PutMapping(value = "/addSkills")
+    public void addUserSkills(
+            @RequestParam("userId") int userId,
+            @RequestParam("skills") String skills) {
+        userService.addSkills(userId, skills);
+    }
 }
