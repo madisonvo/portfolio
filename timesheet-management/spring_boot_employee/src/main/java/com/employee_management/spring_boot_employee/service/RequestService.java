@@ -21,10 +21,12 @@ public class RequestService {
             int userId,
             int projectId) {
         Request req = new Request();
-        if (!requestRepository.isAdminOrManager(userId)) {
+        if (Boolean.FALSE.equals(requestRepository.isAdminOrManager(userId))) {
             System.out.println("User trying to make request is not Admin or Manager");
             return false;
         }
+
+        System.out.println(requestRepository.isAdminOrManager(userId));
 
         req.setRequest(request);
         req.setUserId(userId);

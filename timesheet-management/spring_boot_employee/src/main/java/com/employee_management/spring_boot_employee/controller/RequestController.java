@@ -2,7 +2,6 @@ package com.employee_management.spring_boot_employee.controller;
 
 import com.employee_management.spring_boot_employee.service.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;

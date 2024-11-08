@@ -2,11 +2,16 @@ package com.employee_management.spring_boot_employee.model;
 
 import com.employee_management.spring_boot_employee.type.Status;
 import javax.persistence.*;
+
+import io.hypersistence.utils.hibernate.type.basic.PostgreSQLEnumType;
 import lombok.Data;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 
 @Entity
 @Table(name = "Request")
 @Data
+@TypeDef(name = "pgsql_enum", typeClass = PostgreSQLEnumType.class)
 public class Request {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +27,9 @@ public class Request {
     @Column(name = "projectId")
     private int projectId;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
+    @Type(type = "pgsql_enum")
     private Status status;
 
     public Status getStatus() {
