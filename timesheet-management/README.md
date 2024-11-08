@@ -12,3 +12,8 @@ Nov 5, 2024
 
 Nov 6, 2024
  * Edit TimesheetEntry service and repository to accommodate to changes made to Holiday table
+
+Nov 8, 2024
+ * Implement models, repositories, services, and controllers for each entity in spring_boot_employee
+   - User, Client, Project, Request
+ * Implement simple pub/sub services to have spring_boot_timesheet and spring_boot_employee communicate with each other
